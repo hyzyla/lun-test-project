@@ -1,4 +1,5 @@
 ### Apartment catalog. The project is first steps in Flask
+Only for educational porpose
 
 Для запуску потрібно:
 
