@@ -1,3 +1,5 @@
+### Apartment catalog. The project is first steps in Flask
+
 Для запуску потрібно:
 
 1. Встановити Python3, pip
