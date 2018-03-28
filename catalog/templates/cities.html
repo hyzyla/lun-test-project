@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Міста{% endblock %}
+{% block content %}
+<h2>Міста</h2>
+<a href="/city/new"> Додати нове місто</a>
+{% if cities %}
+<ul>
+    {% for city in cities %}
+    <li> {{ city }} |
+        <a href="/city/edit/{{ city.id }}">Редагувати</a> |
+        <a href="/city/delete/{{ city.id }}">Видалити</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Не знайдено жодного міста у базі даних.</p>
+{% endif %}
+{% endblock %}

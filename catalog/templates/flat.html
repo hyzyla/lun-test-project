@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Додати квартиру{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"
+      integrity="sha256-O1jJhOIWWDc3wq75g7aXDl7aEQT2XPkieX/Mz/u4hQ0=" crossorigin="anonymous"/>
+{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message[1] }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.room_count.label }}
+        {{ form.room_count(class_='form-control') }}
+    </div>
+    <div class="form-group">
+        {{ form.level_count.label }}
+        {{ form.level_count(class_='form-control') }}
+    </div>
+
+    <div class="form-check">
+        <label class="form-check-label">
+            {{ form.is_studio(class_='form-check-input') }}
+            Студія
+        </label>
+    </div>
+
+    <div class="form-group">
+        {{ form.total_area.label }}
+        {{ form.total_area(class_='form-control') }}
+    </div>
+
+
+    <div class="form-group">
+        <label class="form-check-label">
+            {{ form.display_per_smeter(class_='form-check-input') }}
+            {{ form.display_per_smeter.label }}
+        </label>
+
+        <div class="form-group">
+            <label class="sr-only">Ціна:</label>
+            <div class="input-group">
+                <div id="price-type" class="input-group-addon">₴</div>
+                <input type="number" min="1" step="1" value="{{form.price.data}}" id="price" name="price" class="form-control"
+                       placeholder="Price">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <label class="form-check-label">
+            {{ form.is_typical(class_='form-check-input') }}
+            {{ form.is_typical.label }}
+        </label>
+        <div id="building-wrapper">
+            {{ form.buildings }}
+        </div>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Зберегти"/>
+
+
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"
+        integrity="sha256-4EryiRZ08ygMik1Ki80uCcSf/+uelHarV2KQPthf96A=" crossorigin="anonymous">
+</script>
+<!-- Initialize the plugin: -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#buildings').multiselect({
+            includeSelectAllOption: true,
+            selectAllText: 'Обрати всі',
+            buttonWidth: '100%',
+            nonSelectedText: 'Оберіть хоча б одну квартиру',
+            allSelectedText: 'Обрано всі будинки новобудови',
+            nSelectedText: ' будинків обрано!'
+        });
+
+
+        $('#display_per_smeter').change(function() {
+            if(this.checked) {
+                $('#price-type').html("₴/м²");
+            } else {
+                $('#price-type').html("₴");
+            }
+        });
+
+        $('#is_typical').change(function() {
+            console.log(this.checked);
+            if(!this.checked) {
+                $('#building-wrapper').hide();
+            } else {
+                $('#building-wrapper').show();
+            }
+        });
+
+
+        var display_per_smeter_elem = $('#display_per_smeter').get(0);
+        var buildings_elem = $('#is_typical').get(0);
+
+        var event = new Event('change');
+        display_per_smeter_elem.dispatchEvent(event);
+        buildings_elem.dispatchEvent(event);
+
+    });
+
+
+
+
+
+</script>
+{% endblock %}

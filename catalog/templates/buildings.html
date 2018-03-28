@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Новобудова{% endblock %}
+{% block content %}
+    <h2>Новобудова "{{group}}"</h2>
+    <a href="/building/new/{{ group.id }}"> Додати будинок до новобудови</a>
+    {% if group.buildings %}
+        <ul>
+        {% for building in group.buildings %}
+            <li>
+                <a href="/building/flats/{{ building.id }}"> {{ building.name }}</a> |
+                <a href="/building/edit/{{ building.id }}"> Редагувати</a> |
+                <a href="/building/delete/{{ building.id }}"> Видалити</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

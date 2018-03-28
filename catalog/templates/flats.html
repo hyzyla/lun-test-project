@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Новобудова{% endblock %}
+{% block content %}
+    <h2>Будинок "{{building}}"</h2>
+
+    <a href="/flat/new/{{ building.id }}"> Додати квартиру до будинку</a>
+    {% if building.flats %}
+        <ul>
+        {% for flat in building.flats %}
+            <li>
+                {{ flat.room_count}}-кімнатна квартара{% if flat.is_studio %}-студіо{% endif %} ({{ flat.total_area}} м²) - <b>{{ flat.price }}</b> {% if flat.display_per_smeter %}₴/м²{% else %}₴{% endif %} |
+                <a href="/flat/edit/{{ building.id }}/{{ flat.id }}"> Редагувати</a> |
+                <a href="/flat/delete/{{ building.id }}/{{ flat.id }}"> Видалити з цього будинку</a>{% if flat.is_typical %} |
+                <a href="/flat/delete/{{ building.id }}/{{ flat.id }}/all"> Видалити з усіх будинків</a> {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

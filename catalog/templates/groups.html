@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Новобудови{% endblock %}
+{% block content %}
+<h2>Панель керування</h2>
+    <a href="/group/new"> Додати новобудову</a> || <a href="/city/all">Керувати списком міст</a>
+    {% if groups %}
+        <ul>
+        {% for group in groups %}
+            <li> <a href="/group/buildings/{{ group.id }}"> {{ group.name }}</a> |
+                <a href="/group/edit/{{ group.id }}">Редагувати</a> |
+                <a href="/group/delete/{{ group.id }}">Видалити</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Не знайдено жодної новобудови у базі даних.</p>
+    {% endif %}
+{% endblock %}

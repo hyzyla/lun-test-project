@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %} Каталог {% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <form action="" method="post" class="form-inline">
+        {{ form.csrf_token }}
+        <div class="form-group mb-2 mr-sm-2 mb-sm-0 {% if form.city.errors %} has-error has-feedback {% endif %}">
+            {{ form.city(class_='form-control', placeholder='Місто') }}
+
+        </div>
+        <div class="form-group mb-2 mr-sm-2 mb-sm-0">
+            {% if form.room_count.errors %}
+            {{ form.room_count(class_='form-control is-invalid', type='number', placeholder='Мінімальна кількість кімнат')}}
+            {% else %}
+            {{ form.room_count(class_='form-control', type='number', placeholder='Мінімальна кількість кімнат') }}
+            {% endif %}
+        </div>
+        <input type="submit" class="btn btn-primary" value="Шукати"/>
+    </form>
+</div>
+
+
+{% if flats %}
+<div class="row" style="padding-top:20px;">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Новобудова</th>
+            <th scope="col">Місто</th>
+            <th scope="col">Будинок</th>
+            <th scope="col">Загальна площа</th>
+            <th scope="col">Ціна</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for flat in flats %}
+        {% for building in flat.buildings %}
+        <tr>
+            <td>{{ building.group}}</td>
+            <td>{{ building.group.city }}</td>
+            <td>{{building}}{% if not flat.is_typical %} <a href="#" data-toggle="tooltip" title="" data-original-title="Ця квартира є унікальною для цього будинку">*</a>{% endif %}</td>
+            <td>{{ flat.total_area }} м²</td>
+            <td> {{flat.full_price}} ₴ {% if flat.display_per_smeter %} ({{ flat.price }} ₴/м²) {% endif%}
+            </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+{% endblock %}
